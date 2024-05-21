@@ -4,9 +4,27 @@ import 'leaflet.markercluster'
 import 'leaflet-lasso'
 import 'leaflet/dist/leaflet.css'
 import createMarkers from './mapFunctions/createMarkers/createMarkers';
-import {createNodes} from './mapFunctions';
-import airports from '../../data/airports.json'
-export default function initializeMap() {
+import { createNodes } from './mapFunctions';
+import axios from 'axios';
+// import airports from '../../data/airports.json'
+// import airports from '../../data/demo.json'
+const getAirports = async () => {
+    try {
+        const startTime = performance.now(); // Start timer
+
+        const response = await axios.get('http://localhost:5000/airports');
+        const airports = response.data.shift();
+        delete airports[Object.keys(airports)[0]]
+        const endTime = performance.now(); // End timer
+        const executionTime = endTime - startTime; // Calculate execution time
+        console.log("Fetching time:", executionTime, "ms");
+        return airports;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export default async function initializeMap() {
     // Initialize the map
     console.log("Initializing map.");
 
@@ -24,10 +42,13 @@ export default function initializeMap() {
 
 
     L.control.lasso({ position: 'topleft' }).addTo(map)
-
+    const airports = await getAirports();
+    const startTime = performance.now(); // Start timer
     const nodes = createNodes(airports);
     createMarkers(L, map, nodes, airports);
-
+    const endTime = performance.now(); // End timer
+    const executionTime = endTime - startTime; // Calculate execution time
+    console.log("nodes created in:", executionTime.toFixed(5), "milliseconds");
 
 }
 

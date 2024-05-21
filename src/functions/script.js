@@ -1,3 +1,3 @@
-import initializeMap from "./map";
+import initializeMap from "./map/initializeMap";
 
 window.addEventListener("load", initializeMap);
