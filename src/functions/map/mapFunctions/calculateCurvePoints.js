@@ -47,8 +47,8 @@ function getGreatCircleRoute(startLatLng, endLatLng) {
             );
         route.push([
             radiansToDegrees(lat),
-            ((radiansToDegrees(lng) + 540) % 360) - 180,
-        ]); // Normalize the longitude to [-180, 180)
+            radiansToDegrees(lng),
+        ]);
     }
 
     return route;

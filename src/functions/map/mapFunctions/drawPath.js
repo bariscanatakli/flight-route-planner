@@ -17,7 +17,7 @@ export default function drawPath(path, map) {
         // Create elliptical flight path
         const curvePoints = calculateCurvePoints(startLatLng, endLatLng, angle);
         pathLatLngs.push(...curvePoints);
-        console.log(pathLatLngs)
+        
     });
     pathLayer = L.polyline(pathLatLngs, {
         color: "blue",

@@ -5,7 +5,7 @@ let endMarker = null; // Variable to store the end marker
 import { drawPath, findNodeByCoordinates } from "../index";
 import { astar } from '../../../algorithm';
 
-export default function handleMarkerClick(marker, L, nodes, map) {
+export default async function handleMarkerClick(marker, L, nodes, map) {
     console.log("Marker clicked.");
     if (!startMarker) {
         console.log("Setting start marker.");
@@ -29,11 +29,17 @@ export default function handleMarkerClick(marker, L, nodes, map) {
         );
         console.log("Start Node:", startNode);
         console.log("End Node:", endNode);
-        const path = astar(startNode, endNode, nodes);
+
+        const startTime = performance.now(); // Start timer
+
+        const path = await astar(startNode, endNode, nodes);
+
         console.log(path);
         // Draw path on map
         drawPath(path, map);
-
+        const endTime = performance.now(); // End timer
+        const executionTime = endTime - startTime; // Calculate execution time
+        console.log("Execution time:", executionTime.toFixed(5), "milliseconds");
         // Reset start and end markers for future pathfinding
         startMarker = null;
         endMarker = null;

@@ -1,7 +1,8 @@
 import haversine from "../getHaversine";
 import getNeighbors from "./getNeighbors";
+
 // A* algorithm function
-export default function astar(startNode, endNode, nodes) {
+export default async function astar(startNode, endNode, nodes) {
   console.log("Running A* algorithm.");
   let openSet = []; // Open list
   let closedSet = []; // Closed list
@@ -28,14 +29,21 @@ export default function astar(startNode, endNode, nodes) {
       return path.reverse();
     }
 
-
     // Move current node from open list to closed list
     let index = openSet.indexOf(currentNode);
     openSet.splice(index, 1);
     closedSet.push(currentNode);
 
+    // Find distance between start and end nodes
+    let distance = haversine(
+      startNode.lat,
+      startNode.lon,
+      endNode.lat,
+      endNode.lon
+    );
+
     // Check neighbors
-    let neighbors = getNeighbors(currentNode, nodes, 500000);
+    let neighbors = await getNeighbors(currentNode, nodes, distance);
     for (let i = 0; i < neighbors.length; i++) {
       let neighbor = neighbors[i];
       if (!closedSet.includes(neighbor) && !neighbor.wall) {
