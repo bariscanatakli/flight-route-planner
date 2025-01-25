@@ -35,7 +35,7 @@ Flight Route Planner is a web-based application that helps users find optimal fl
 
 ```bash
 # Clone the repository
-git clone [repository-url]
+git clone https://github.com/bariscanatakli/flight-route-planner
 
 # Install dependencies
 npm install
